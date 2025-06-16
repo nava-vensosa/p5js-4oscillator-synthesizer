@@ -1,0 +1,19 @@
+{
+  "name": "p5js-oscillator-gui",
+  "version": "1.0.0",
+  "description": "Interactive p5.js oscillator with GUI controls and audio visualization",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx live-server .",
+    "dev": "npx live-server --port=3000"
+  },
+  "dependencies": {
+    "p5": "^1.7.0"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "keywords": ["p5js", "audio", "oscillator", "visualization", "gui"],
+  "author": "",
+  "license": "MIT"
+}

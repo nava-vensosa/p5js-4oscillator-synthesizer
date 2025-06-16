@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5.js Oscillator GUI</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/addons/p5.sound.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+        }
+        
+        .controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            max-height: 90vh;
+            overflow-y: auto;
+            width: 300px;
+        }
+        
+        .oscillator-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .oscillator-section h4 {
+            margin: 0 0 10px 0;
+            color: #4CAF50;
+            font-size: 14px;
+        }
+        
+        .control-group {
+            margin-bottom: 12px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #ccc;
+        }
+        
+        input[type="range"] {
+            width: 120px;
+            margin-bottom: 5px;
+        }
+        
+        .freq-input {
+            width: 80px;
+            padding: 2px 4px;
+            margin-left: 5px;
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        
+        .cents-control {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        
+        .cents-step {
+            width: 40px;
+            padding: 2px 4px;
+            background: #444;
+            color: white;
+            border: 1px solid #666;
+            border-radius: 3px;
+            font-size: 10px;
+            text-align: center;
+        }
+        
+        .cents-btn {
+            background: #666;
+            color: white;
+            border: none;
+            padding: 2px 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 10px;
+            min-width: 25px;
+        }
+        
+        .cents-btn:hover {
+            background: #777;
+        }
+        
+        .cents-display {
+            font-size: 10px;
+            color: #aaa;
+            min-width: 35px;
+            text-align: center;
+        }
+        
+        select {
+            width: 100%;
+            padding: 5px;
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 3px;
+        }
+        
+        .value-display {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+        
+        button.stop {
+            background: #f44336;
+        }
+        
+        button.stop:hover {
+            background: #da190b;
+        }
+        
+        main {
+            margin-left: 340px;
+        }
+        
+        .visualization-label {
+            color: #ccc;
+            font-size: 16px;
+            margin: 20px 0 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <h3>4-Oscillator Synthesizer</h3>
+        
+        <!-- Oscillator 1 -->
+        <div class="oscillator-section">
+            <h4>Oscillator 1</h4>
+            <div class="control-group">
+                <label for="frequency1">Frequency:</label>
+                <input type="range" id="frequency1" min="20" max="2000" value="440" step="1">
+                <input type="number" id="freq-input1" min="20" max="20000" value="440" step="0.1" class="freq-input">
+                <div class="cents-control">
+                    <input type="number" id="cents-step1" min="1" max="100" value="10" step="1" class="cents-step">
+                    <button class="cents-btn" id="cents-minus1">-¢</button>
+                    <span class="cents-display" id="cents-display1">±0¢</span>
+                    <button class="cents-btn" id="cents-plus1">+¢</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="amplitude1">Amplitude:</label>
+                <input type="range" id="amplitude1" min="0" max="1" value="0.3" step="0.01">
+                <div class="value-display" id="amp-value1">0.30</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="waveform1">Wave Shape:</label>
+                <select id="waveform1">
+                    <option value="sine" selected>Sine</option>
+                    <option value="triangle">Triangle</option>
+                    <option value="square">Square</option>
+                    <option value="sawtooth">Sawtooth</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Oscillator 2 -->
+        <div class="oscillator-section">
+            <h4>Oscillator 2</h4>
+            <div class="control-group">
+                <label for="frequency2">Frequency:</label>
+                <input type="range" id="frequency2" min="20" max="2000" value="554" step="1">
+                <input type="number" id="freq-input2" min="20" max="20000" value="554" step="0.1" class="freq-input">
+                <div class="cents-control">
+                    <input type="number" id="cents-step2" min="1" max="100" value="10" step="1" class="cents-step">
+                    <button class="cents-btn" id="cents-minus2">-¢</button>
+                    <span class="cents-display" id="cents-display2">±0¢</span>
+                    <button class="cents-btn" id="cents-plus2">+¢</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="amplitude2">Amplitude:</label>
+                <input type="range" id="amplitude2" min="0" max="1" value="0.2" step="0.01">
+                <div class="value-display" id="amp-value2">0.20</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="waveform2">Wave Shape:</label>
+                <select id="waveform2">
+                    <option value="sine">Sine</option>
+                    <option value="triangle" selected>Triangle</option>
+                    <option value="square">Square</option>
+                    <option value="sawtooth">Sawtooth</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Oscillator 3 -->
+        <div class="oscillator-section">
+            <h4>Oscillator 3</h4>
+            <div class="control-group">
+                <label for="frequency3">Frequency:</label>
+                <input type="range" id="frequency3" min="20" max="2000" value="659" step="1">
+                <input type="number" id="freq-input3" min="20" max="20000" value="659" step="0.1" class="freq-input">
+                <div class="cents-control">
+                    <input type="number" id="cents-step3" min="1" max="100" value="10" step="1" class="cents-step">
+                    <button class="cents-btn" id="cents-minus3">-¢</button>
+                    <span class="cents-display" id="cents-display3">±0¢</span>
+                    <button class="cents-btn" id="cents-plus3">+¢</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="amplitude3">Amplitude:</label>
+                <input type="range" id="amplitude3" min="0" max="1" value="0.15" step="0.01">
+                <div class="value-display" id="amp-value3">0.15</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="waveform3">Wave Shape:</label>
+                <select id="waveform3">
+                    <option value="sine">Sine</option>
+                    <option value="triangle">Triangle</option>
+                    <option value="square" selected>Square</option>
+                    <option value="sawtooth">Sawtooth</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Oscillator 4 -->
+        <div class="oscillator-section">
+            <h4>Oscillator 4</h4>
+            <div class="control-group">
+                <label for="frequency4">Frequency:</label>
+                <input type="range" id="frequency4" min="20" max="2000" value="880" step="1">
+                <input type="number" id="freq-input4" min="20" max="20000" value="880" step="0.1" class="freq-input">
+                <div class="cents-control">
+                    <input type="number" id="cents-step4" min="1" max="100" value="10" step="1" class="cents-step">
+                    <button class="cents-btn" id="cents-minus4">-¢</button>
+                    <span class="cents-display" id="cents-display4">±0¢</span>
+                    <button class="cents-btn" id="cents-plus4">+¢</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="amplitude4">Amplitude:</label>
+                <input type="range" id="amplitude4" min="0" max="1" value="0.1" step="0.01">
+                <div class="value-display" id="amp-value4">0.10</div>
+            </div>
+            
+            <div class="control-group">
+                <label for="waveform4">Wave Shape:</label>
+                <select id="waveform4">
+                    <option value="sine">Sine</option>
+                    <option value="triangle">Triangle</option>
+                    <option value="square">Square</option>
+                    <option value="sawtooth" selected>Sawtooth</option>
+                </select>
+            </div>
+        </div>
+        
+        <button id="start-btn">Start All Oscillators</button>
+        <button id="stop-btn" class="stop">Stop All Oscillators</button>
+    </div>
+    
+    <main>
+        <div id="sketch-container"></div>
+    </main>
+    
+    <script src="sketch.js"></script>
+</body>
+</html>
