@@ -4,7 +4,7 @@ let fft;
 let isPlaying = false;
 let waveData = [];
 let spectrumHistory = [];
-let maxHistoryLength = .18575963718; // Keep history length at 1 as requested
+let maxHistoryLength = .18575963718; // Keep history length at sampleSize/sampleRate
 
 // Control variables for 4 oscillators
 let oscillatorData = [
@@ -42,7 +42,7 @@ function setup() {
     }
     
     // Create FFT for spectrum analysis with higher resolution
-    fft = new p5.FFT(0.9, 8192);
+    fft = new p5.FFT(0.9, 8196);
     fft.setInput(mixer);
     
     // Initialize spectrum history with higher resolution
