@@ -12,7 +12,7 @@ An advanced interactive web application built with p5.js that provides real-time
 
 - **High-Resolution Visualizations**
   - **Combined Waveform Display**: Shows the mixed waveform from all 4 oscillators
-  - **High-Resolution Spectrograph**: Time-frequency heatmap (8192 FFT bins, 400 time slices) showing how the combined spectrum evolves over time
+  - **High-Resolution Spectrograph**: Time-frequency heatmap (8196 FFT bins, 8196/44100 window slices) showing how the combined spectrum evolves over time
   - **Current Spectrum**: Live frequency analysis of the combined signal from all oscillators
 
 - **Enhanced User Interface**
