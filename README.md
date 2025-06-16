@@ -108,12 +108,6 @@ This application works best in modern browsers that support:
 - HTML5 Canvas
 - ES6+ JavaScript features
 
-Tested browsers:
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
 ## License
 
 MIT License - feel free to use and modify for your projects.
